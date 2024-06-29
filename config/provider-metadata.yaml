@@ -1,36 +1,149 @@
-name: hashicorp/null
+name: permitio/permit-io
 resources:
-    null_resource:
+    permitio_condition_set_rule Resource - terraform-provider-permit-io:
         subCategory: ""
-        description: The null_resource resource implements the standard resource lifecycle but takes no further action. The triggers argument allows specifying an arbitrary set of values that, when changed, will cause the resource to be replaced.
-        name: null_resource
-        title: null_resource Resource - terraform-provider-null
-        examples:
-            - name: cluster
-              manifest: |-
-                {
-                  "connection": [
-                    {
-                      "host": "${element(aws_instance.cluster.*.public_ip, 0)}"
-                    }
-                  ],
-                  "provisioner": {
-                    "remote-exec": [
-                      {
-                        "inline": [
-                          "bootstrap-cluster.sh ${join(\" \", aws_instance.cluster.*.private_ip)}"
-                        ]
-                      }
-                    ]
-                  },
-                  "triggers": {
-                    "cluster_instance_ids": "${join(\",\", aws_instance.cluster.*.id)}"
-                  }
-                }
-              dependencies:
-                aws_instance.cluster: |-
-                    {
-                      "count": 3
-                    }
-        argumentDocs: {}
+        description: See our documentation https://api.permit.io/v2/redoc#tag/Condition-Set-Rules for more information on condition sets rules.
+        name: permitio_condition_set_rule Resource - terraform-provider-permit-io
+        title: permitio_condition_set_rule Resource - terraform-provider-permit-io
+        argumentDocs:
+            environment_id: (String) Unique id of the environment that owns the condition set rule
+            id: (String) Unique id of the condition set rule
+            organization_id: (String) Unique id of the organization that owns the condition set rule
+            permission: '(String) The permission that will be granted to the userset on the resourceset. The permission can be either a resource action id, or {resource_key}:{action_key}, i.e: the "permission name".'
+            project_id: (String) Unique id of the project that owns the condition set rule
+            resource_set: '(String) The resourceset that represents the resources that are granted for access, i.e: all the resources matching this rule can be accessed by the userset to perform the granted permission'
+            user_set: '(String) The userset that will be given permission, i.e: all the users matching this rule will be given the specified permission'
+        importStatements: []
+    permitio_proxy_config Resource - terraform-provider-permit-io:
+        subCategory: ""
+        description: See the documentation https://api.permit.io/v2/redoc#tag/Proxy-Config/operation/create_proxy_config for more information about proxy configs.
+        name: permitio_proxy_config Resource - terraform-provider-permit-io
+        title: permitio_proxy_config Resource - terraform-provider-permit-io
+        argumentDocs:
+            action: (String)
+            auth_mechanism: |-
+                (String) Default: "Bearer"
+                Enum: "Bearer" "Basic" "Headers"
+                Proxy config auth mechanism will define the authentication mechanism that will be used to authenticate the request.
+            auth_secret: (Attributes) Proxy config secret is set to enable the Permit Proxy to make proxied requests to the backend service. (see below for nested schema)
+            basic: (String)
+            bearer: (String)
+            environment_id: (String) Unique id of the environment that owns the proxy config
+            headers: (Map of String)
+            http_method: (String)
+            id: (String) Unique id of the proxy config
+            key: (String) Proxy Config is set to enable the Permit Proxy to make proxied requests as part of the Frontend AuthZ.
+            mapping_rules: (Attributes List) Proxy config mapping rules will include the rules that will be used to map the request to the backend service by a URL and a http method. (see below for nested schema)
+            name: '(String) The name of the proxy config, for example: ''Stripe API'
+            organization_id: (String) Unique id of the organization that owns the proxy config
+            priority: (Number)
+            project_id: (String) Unique id of the project that owns the proxy config
+            resource: (String)
+            url: (String)
+        importStatements: []
+    permitio_relation Resource - terraform-provider-permit-io:
+        subCategory: ""
+        description: See the documentation https://api.permit.io/v2/redoc#tag/Resource-Relations/operation/create_resource_relation for more information about Relations
+        name: permitio_relation Resource - terraform-provider-permit-io
+        title: permitio_relation Resource - terraform-provider-permit-io
+        argumentDocs:
+            created_at: (String) The creation timestamp. This is a timestamp for when the object was created.
+            description: (String) The description. This is a human-readable description for the object.
+            environment_id: (String) The environment ID. This is a unique identifier for the environment.
+            id: (String) The resource ID. This is a unique identifier for the resource.
+            key: (String) The key. This is a unique identifier.
+            name: (String) The name. This is a human-readable name for the object.
+            object_resource: (String) The object resource ID or key
+            object_resource_id: (String) The object resource ID
+            organization_id: (String) The organization ID. This is a unique identifier for the organization.
+            project_id: (String) The project ID. This is a unique identifier for the project.
+            subject_resource: (String) The subject resource ID or key
+            subject_resource_id: (String) The subject resource ID
+            updated_at: (String) The update timestamp. This is a timestamp for when the object was last updated.
+        importStatements: []
+    permitio_resource Resource - terraform-provider-permit-io:
+        subCategory: ""
+        description: See the documentation https://api.permit.io/v2/redoc#tag/Resources/operation/create_resource for more information about resources.
+        name: permitio_resource Resource - terraform-provider-permit-io
+        title: permitio_resource Resource - terraform-provider-permit-io
+        argumentDocs:
+            actions: |-
+                (Attributes Map) A actions definition block, typically contained within a resource type definition block.
+                The actions represents the ways you can interact with a protected resource. (see below for nested schema)
+            attributes: (Attributes Map) Attributes that each resource of this type defines, and can be used in your ABAC policies. (see below for nested schema)
+            created_at: (String) Timestamp when the resource was created
+            description: (String) An optional longer description of what this resource respresents in your system
+            environment_id: (String) Unique id of the environment that owns the resource
+            id: (String) Unique id of the resource
+            key: '(String) A URL-friendly name of the resource (i.e: slug). You will be able to query later using this key instead of the id (UUID) of the resource.'
+            name: (String) The name of the resource
+            organization_id: (String) Unique id of the organization that owns the resource
+            project_id: (String) Unique id of the project that owns the resource
+            type: (String)
+            updated_at: (String) Timestamp when the resource was last updated
+            urn: (String) The URN (Uniform Resource Name) of the resource
+        importStatements: []
+    permitio_resource_set Resource - terraform-provider-permit-io:
+        subCategory: ""
+        description: See the our documentation https://api.permit.io/v2/redoc#tag/Condition-Sets/operation/create_condition_set for more information on condition sets.
+        name: permitio_resource_set Resource - terraform-provider-permit-io
+        title: permitio_resource_set Resource - terraform-provider-permit-io
+        argumentDocs:
+            conditions: (String) a boolean expression that consists of multiple conditions, with and/or logic.
+            description: (String) an optional longer description of the set
+            environment_id: (String) The id of the environment to which the condition set belongs.
+            id: (String) A unique id by which Permit will identify the condition set. The key will be used as the generated rego rule name.
+            key: (String) A unique id by which Permit will identify the condition set. The key will be used as the generated rego rule name.
+            name: '(String) A descriptive name for the set, i.e: ''US based employees'' or ''Users behind VPN'''
+            organization_id: (String) The id of the organization to which the condition set belongs.
+            project_id: (String) The id of the project to which the condition set belongs.
+            resource: (String)
+        importStatements: []
+    permitio_role Resource - terraform-provider-permit-io:
+        subCategory: ""
+        description: See the documentation https://api.permit.io/v2/redoc#tag/Resources/operation/create_resource for more information about roles. You can also read about Resource Roles here https://api.permit.io/v2/redoc#tag/Resource-Roles/operation/create_resource_role.
+        name: permitio_role Resource - terraform-provider-permit-io
+        title: permitio_role Resource - terraform-provider-permit-io
+        argumentDocs:
+            created_at: (String) The creation timestamp. This is a timestamp for when the object was created.
+            description: (String) The description. This is a human-readable description for the object.
+            environment_id: (String) The environment ID. This is a unique identifier for the environment.
+            extends: '(Set of String) list of role keys that define what roles this role extends. In other words: this role will automatically inherit all the permissions of the given roles in this list.'
+            id: (String) The resource ID. This is a unique identifier for the resource.
+            key: (String) The key. This is a unique identifier.
+            name: (String) The name. This is a human-readable name for the object.
+            organization_id: (String) The organization ID. This is a unique identifier for the organization.
+            permissions: (Set of String) list of action keys that define what actions this resource role is permitted to do
+            project_id: (String) The project ID. This is a unique identifier for the project.
+            resource: (String) The unique resource key that the role belongs to.
+            resource_id: (String) The unique resource ID that the role belongs to.
+            updated_at: (String) The update timestamp. This is a timestamp for when the object was last updated.
+        importStatements: []
+    permitio_role_derivation Resource - terraform-provider-permit-io:
+        subCategory: ""
+        description: See the documentation https://api.permit.io/v2/redoc#tag/Implicit-Grants/operation/create_implicit_grant for more information on role derivations.
+        name: permitio_role_derivation Resource - terraform-provider-permit-io
+        title: permitio_role_derivation Resource - terraform-provider-permit-io
+        argumentDocs:
+            linked_by: (String) The relation that links the resource to the role.
+            on_resource: (String) The resource that the user will derive the role on.
+            resource: (String) Either the unique id of the resource, or the URL-friendly key of the resource that you want to create role derivation for.
+            role: (String) The role that the user will derive.
+            to_role: (String) The role that you want to create role derivation for.
+        importStatements: []
+    permitio_user_set Resource - terraform-provider-permit-io:
+        subCategory: ""
+        description: See the our documentation https://api.permit.io/v2/redoc#tag/Condition-Sets/operation/create_condition_set for more information on condition sets.
+        name: permitio_user_set Resource - terraform-provider-permit-io
+        title: permitio_user_set Resource - terraform-provider-permit-io
+        argumentDocs:
+            conditions: (String) a boolean expression that consists of multiple conditions, with and/or logic.
+            description: (String) an optional longer description of the set
+            environment_id: (String) The id of the environment to which the condition set belongs.
+            id: (String) A unique id by which Permit will identify the condition set. The key will be used as the generated rego rule name.
+            key: (String) A unique id by which Permit will identify the condition set. The key will be used as the generated rego rule name.
+            name: '(String) A descriptive name for the set, i.e: ''US based employees'' or ''Users behind VPN'''
+            organization_id: (String) The id of the organization to which the condition set belongs.
+            project_id: (String) The id of the project to which the condition set belongs.
+            resource: (String) The resource id to which the condition set applies. This is only required for resource sets.
         importStatements: []

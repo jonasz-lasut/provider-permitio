@@ -9,8 +9,14 @@ import "github.com/crossplane/upjet/pkg/config"
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"null_resource": config.IdentifierFromProvider,
+	"permitio_condition_set_rule": config.IdentifierFromProvider,
+	"permitio_relation":           config.IdentifierFromProvider,
+	"permitio_role":               config.IdentifierFromProvider,
+	"permitio_resource":           config.IdentifierFromProvider,
+	"permitio_resource_set":       config.IdentifierFromProvider,
+	"permitio_user_set":           config.IdentifierFromProvider,
+	"permitio_role_derivation":    config.IdentifierFromProvider,
+	"permitio_proxy_config":       config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
